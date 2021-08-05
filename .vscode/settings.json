@@ -3,14 +3,15 @@
     "python.linting.pylintEnabled": true,
     "python.linting.pylintArgs": [
         "--load-plugins=pylint_django",
-        "--django-settings-module=levelup.settings",
+        "--django-settings-module=levelup.settings"
     ],
     "sqltools.connections": [
         {
             "previewLimit": 50,
             "driver": "SQLite",
-            "name": "Level up",
-            "database": "./db.sqlite3"
+            "name": "Level Up",
+            "database": "db.sqlite3"
         }
-    ]
+    ],
+    "python.pythonPath": "/Users/calebwagner/.local/share/virtualenvs/levelup-uT7CAuO9/bin/python"
 }
