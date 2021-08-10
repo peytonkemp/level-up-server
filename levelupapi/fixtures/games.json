@@ -8,7 +8,8 @@
             "number_of_players": 4,
             "maker": "Jim",
             "game_type_id": 1,
-            "gamer_id": 1
+            "gamer_id": 1,
+            "skill_level": 1
         }
     },
     {
@@ -20,7 +21,8 @@
             "number_of_players": 6,
             "maker": "John",
             "game_type_id": 2,
-            "gamer_id": 1
+            "gamer_id": 1,
+            "skill_level": 1
         }
     },
     {
@@ -32,7 +34,8 @@
             "number_of_players": 10,
             "maker": "Bob",
             "game_type_id": 2,
-            "gamer_id": 1
+            "gamer_id": 1,
+            "skill_level": 1
         }
     }
 ]

@@ -1,6 +1,13 @@
+from django.contrib import admin
+from django.urls import path, include
 from rest_framework import routers
-from levelupapi.views import GameTypeView
-from levelupapi.views import GameTypes, Games, GameView
+from levelupapi.views import (
+    register_user,
+    login_user,
+    GameTypeView,
+    EventView,
+    GameViewSet,
+)
 
 """levelup URL Configuration
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -16,20 +23,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls import include
-from django.urls import path
-from levelupapi.views import register_user, login_user
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'gametypes', GameTypeView, 'gametype')
-router.register(r'games', GameView, 'game')
-
+router.register(r'games', GameViewSet, 'game')
+router.register(r'events', EventView, 'event')
 
 urlpatterns = [
-    path('', include(router.urls)),
-    # Requests to http://localhost:8000/register will be routed to the register_user function
+    path('admin/', admin.site.urls),
     path('register', register_user),
-    # Requests to http://localhost:8000/login will be routed to the login_user function
     path('login', login_user),
-    path('api-auth', include('rest_framework.urls', namespace='rest_framework')),
+    path('', include(router.urls))
 ]

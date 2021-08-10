@@ -7,41 +7,45 @@ from levelupapi.models import GameType
 
 
 class GameTypeView(ViewSet):
-    """Level up game types"""
+    """The view for the GameType model
+    methods:
+        list: returns a list of all GameTypes
+        retrieve: returns a single game type based on id
+    """
 
-    def retrieve(self, request, pk=None):
-        """Handle GET requests for single game type
+    def retrieve(self, request, pk):
+        """Retrieves a single GameType
+        Args:
+            request (Request): the request object
+            pk (int): the id requested in the url
         Returns:
-            Response -- JSON serialized game type
+            Response: serialized gametype object
         """
         try:
             game_type = GameType.objects.get(pk=pk)
             serializer = GameTypeSerializer(
                 game_type, context={'request': request})
             return Response(serializer.data)
+
         except Exception as ex:
             return HttpResponseServerError(ex)
 
     def list(self, request):
-        """Handle GET requests to get all game types
+        """Gets all game types in the database
+        Args:
+            request (Request): the request object
         Returns:
-            Response -- JSON serialized list of game types
+            Response: serialized list of all game types
         """
         game_types = GameType.objects.all()
-
-        # Note the additional `many=True` argument to the
-        # serializer. It's needed when you are serializing
-        # a list of objects instead of a single object.
         serializer = GameTypeSerializer(
-            game_types, many=True, context={'request': request})
+            game_types, context={'request': request}, many=True)
         return Response(serializer.data)
 
 
 class GameTypeSerializer(serializers.ModelSerializer):
-    """JSON serializer for game types
-    Arguments:
-        serializers
+    """GameType model serializer returns __all__ fields
     """
     class Meta:
         model = GameType
-        fields = ('id', 'label')
+        fields = '__all__'
