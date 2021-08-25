@@ -1,3 +1,5 @@
 from .auth import login_user, register_user
-from .gametype import GameTypeView, GameTypeSerializer, GameType
-from .game import Game, GameView, GameSerializer
+from .game_type import GameTypeView
+from .game import GameViewSet
+from .event import EventView
+from .profile import Profile

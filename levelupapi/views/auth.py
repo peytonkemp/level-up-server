@@ -8,44 +8,46 @@ from rest_framework.response import Response
 from levelupapi.models import Gamer
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([AllowAny])
 def login_user(request):
-    '''Handles the authentication of a gamer
-    Method arguments:
-    request -- The full HTTP request object
-    '''
+    """Checks if the user can log in and returns a valid token
+    Args:
+        request (Request): the request object
+    Returns:
+        Response: {
+            valid: boolean, is it a real user?
+            token: string, the token of the user
+        }
+    """
     username = request.data['username']
     password = request.data['password']
 
-    # Use the built-in authenticate method to verify
-    # authenticate returns the user object or None if no user is found
     authenticated_user = authenticate(username=username, password=password)
-
-    # If authentication was successful, respond with their token
+    data = {}
     if authenticated_user is not None:
         token = Token.objects.get(user=authenticated_user)
         data = {
             'valid': True,
             'token': token.key
         }
-        return Response(data)
     else:
-        # Bad login details were provided. So we can't log the user in.
         data = {'valid': False}
-        return Response(data)
+
+    return Response(data)
 
 
-@api_view(['POST'])
+@api_view(["POST"])
 @permission_classes([AllowAny])
 def register_user(request):
-    '''Handles the creation of a new gamer for authentication
-    Method arguments:
-    request -- The full HTTP request object
-    '''
-
-    # Create a new user by invoking the `create_user` helper method
-    # on Django's built-in User model
+    """Registers a new user and creates their token
+    Args:
+        request (Request): the request object
+    Returns:
+        Response: {
+            token: the newly created user's token
+        }
+    """
     new_user = User.objects.create_user(
         username=request.data['username'],
         email=request.data['email'],
@@ -54,14 +56,14 @@ def register_user(request):
         last_name=request.data['last_name']
     )
 
-    # Now save the extra info in the levelupapi_gamer table
     gamer = Gamer.objects.create(
         bio=request.data['bio'],
         user=new_user
     )
 
-    # Use the REST Framework's token generator on the new user account
     token = Token.objects.create(user=gamer.user)
-    # Return the token to the client
-    data = {'token': token.key}
+    data = {
+        'token': token.key
+    }
+
     return Response(data)

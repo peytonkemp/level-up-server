@@ -18,4 +18,21 @@ class Event(models.Model):
     time = models.TimeField()
     description = models.TextField()
     title = models.CharField(max_length=100)
-    attendees = models.ManyToManyField("Gamer", through="EventGamer", related_name="attending")
+    attendees = models.ManyToManyField(
+        "Gamer", through="EventGamer", related_name="attending")
+
+    def __str__(self) -> str:
+        return f'{self.game.name} on {self.date} hosted by {self.host}'
+
+    @property
+    def joined(self):
+        return self.__joined
+
+    @joined.setter
+    def joined(self, value):
+        self.__joined = value
+
+    @property
+    def attendee_count(self):
+        length = len(self.attendees.all())
+        return length
